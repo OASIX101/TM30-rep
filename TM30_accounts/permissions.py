@@ -37,4 +37,4 @@ class IsUserOrReadOnly(permissions.BasePermission):
                 return True
             else:
 
-                raise PermissionDenied(detail={'message': 'Permission denied. User is not an admin'})
+                raise PermissionDenied(detail={'message': 'Permission denied. User is not an admin or user is anonymous'})
