@@ -13,8 +13,8 @@ from rest_framework.exceptions import NotFound, PermissionDenied
 
 class ItemView(APIView):
     
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsUserOrReadOnly]
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsUserOrReadOnly]
     
     def get(self, request, format=None):
         """
@@ -62,8 +62,8 @@ class ItemView(APIView):
 
 class ItemsEditView(APIView):
 
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAdminOnly]
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAdminOnly]
 
     def get_item(self, item_id):
         """
@@ -181,43 +181,66 @@ class CartView(APIView):
         data = {}
         data['cart_item'] = request.data['cart_item']
         data['quantity'] = request.data['quantity']
-        data['user'] = request.user.id
+        data['user'] = request.user.id # automatically add the user to the dict
         try:
-            catem = Item.objects.get(id=data['cart_item'])          
+            catem = Item.objects.get(id=data['cart_item'])         
             catem_price = catem.price
             data['item_cost'] = data['quantity'] * catem_price
             data['status'] = 'pending'
+            users = CustomUser.objects.all()
+            if request.user in users:
+                user_id = request.user.id
+                object = CustomUser.objects.get(id=user_id)
+                obj = object.user.all()
+                objs = []
+                for item in obj:
+                    items = Item.objects.get(item_name=item)
+                    it_name = items.item_name
+                    objs.append(it_name) # to get the name of item of the cart order and append to a list
 
-            if request.user in CustomUser.objects.all():
+                if str(catem) not in objs: # to check whether the cart order is already in the user cart
                 
-                if data['quantity'] > catem.quantity_available:
-                    return Response(data={'message': 'Quantity ordered is higher than quantity available in store'}, status=status.HTTP_403_FORBIDDEN)
-
-                else:
-                    catem.quantity_available -= data['quantity'] 
-                    catem.save()
-                    serializer = CartSerializer(data=data)
-                    
-                    if serializer.is_valid():
-                        serializer.save()
-                        
-                        data = {
-                            "message":"item successfully added to cart",
-                        }
-
-                        return Response(data, status = status.HTTP_200_OK)
+                    if data['quantity'] > catem.quantity_available: #check whether quantity in the store is greater than quantity demanded
+                        return Response(data={'message': 'Quantity ordered is higher than quantity available in store'}, status=status.HTTP_403_FORBIDDEN)
 
                     else:
-                        data = {
-                            "message":"failed",
-                            "error":serializer.errors
-                        }
-                    
-                    return Response(data, status = status.HTTP_400_BAD_REQUEST)
+                        catem.quantity_available -= data['quantity'] 
+                        catem.save()
+                        serializer = CartSerializer(data=data)
+                        
+                        if serializer.is_valid():
+                            serializer.save()
+                            
+                            data = {
+                                "message":"item successfully added to cart",
+                            }
+
+                            return Response(data, status = status.HTTP_200_OK)
+
+                        else:
+                            data = {
+                                "message":"failed",
+                                "error":serializer.errors
+                            }
+                        
+                        return Response(data, status = status.HTTP_400_BAD_REQUEST)
+ 
+                else:
+                    if data['quantity'] > catem.quantity_available:
+                        return Response(data={'message': 'Quantity ordered is higher than quantity available in store'}, status=status.HTTP_403_FORBIDDEN)
+
+                    else:
+                        cuser = CustomUser.objects.get(id=data['user']) 
+                        c_user = cuser.user.get(id=data['cart_item'])
+                        c_user.quantity+=data['quantity']
+                        c_user.item_cost+=data['item_cost']
+                        c_user.save()  
+                        catem.quantity_available-=data['quantity']
+                        catem.save()
+                        return Response(data={"message":"items successfully updated to existing cart"}, status = status.HTTP_200_OK)
 
             else:
                 raise PermissionDenied(detail={'message': 'AnonymousUser are forbidden to perform this action.'})
-
         except Item.DoesNotExist:
             raise NotFound(detail={'message': 'Item with id does not exist'})
 

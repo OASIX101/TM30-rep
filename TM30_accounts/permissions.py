@@ -3,7 +3,7 @@ from rest_framework.exceptions import PermissionDenied
 
 class IsUserAuthenticated(permissions.BasePermission):
     """
-    Allows access only to authenticated users.
+    Allows access only to authenticated users and admin users.
     """
 
     def has_permission(self, request, view):
@@ -25,7 +25,7 @@ class IsAdminOnly(permissions.BasePermission):
             raise PermissionDenied(detail={'message': 'Permission denied. User is not an admin'})
 
 class IsUserOrReadOnly(permissions.BasePermission):
-
+    """allow only users to read only and not write to the database"""
     def has_permission(self, request, view):
 
         if request.method == 'GET' and request.user.is_authenticated:

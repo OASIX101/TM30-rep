@@ -37,8 +37,8 @@ class Cart(models.Model):
     date_ordered = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=100, choices=ITEM_STATUS, default='pending')
 
-    def __str__(self):
-        return f"{CustomUser.objects.get(username=self.user)}'s cart"
+    def __str__(self): 
+        return str(Item.objects.get(item_name=self.cart_item))
 
     @property
     def cart_content(self):

@@ -12,3 +12,6 @@ class CustomUser(AbstractUser):
     location = models.CharField(max_length=210)
 
     REQUIRED_FIELDS = ['first_name', 'last_name', 'email', 'gender', 'location']
+
+    def __str__(self):
+        return self.username
