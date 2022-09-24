@@ -176,7 +176,6 @@ class CartView(APIView):
         Adds items to the cart of a user in the database to the cart model only if the  
         item quantity available in the database is greater than quantity demanded.
         Accessible only to logged in users.
-
         """  
         data = {}
         data['cart_item'] = request.data['cart_item']
@@ -303,11 +302,9 @@ def delivered_items(request, cart_id):
         try:
             cart_item = Cart.objects.get(id=cart_id, status="pending")
             cart_item.status = "delivered"
-            cart_item.delete()
             cart_item.save()
        
             return Response({"message":"success"}, status=status.HTTP_204_NO_CONTENT)
         
         except Cart.DoesNotExist:
             return Response({"error":"Cart not found","message":"failed"}, status=status.HTTP_404_NOT_FOUND)
-
