@@ -1,4 +1,4 @@
-# TM30-rep
+# TM30-explanation
 SUPERUSER CREDENTIALS
 username = anthony
 password = oreoluwa
