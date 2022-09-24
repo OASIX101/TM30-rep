@@ -13,8 +13,8 @@ from rest_framework.exceptions import NotFound, PermissionDenied
 
 class ItemView(APIView):
     
-    # authentication_classes = [JWTAuthentication]
-    # permission_classes = [IsUserOrReadOnly]
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsUserOrReadOnly]
     
     def get(self, request, format=None):
         """
@@ -62,8 +62,8 @@ class ItemView(APIView):
 
 class ItemsEditView(APIView):
 
-    # authentication_classes = [JWTAuthentication]
-    # permission_classes = [IsAdminOnly]
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAdminOnly]
 
     def get_item(self, item_id):
         """
