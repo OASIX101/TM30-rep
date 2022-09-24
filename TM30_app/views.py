@@ -295,12 +295,15 @@ class CartEditView(APIView):
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAdminOnly])
 def delivered_items(request, cart_id):
-    """Allows admin user to change the status of a cart item to delivered if the item has been delivered to the user"""
+    """Allows admin user to change the status of a cart item to delivered if the item has been delivered to the user
+        and delete cart item if it has been delivered
+    """
     
     if request.method == 'GET':
         try:
             cart_item = Cart.objects.get(id=cart_id, status="pending")
             cart_item.status = "delivered"
+            cart_item.delete()
             cart_item.save()
        
             return Response({"message":"success"}, status=status.HTTP_204_NO_CONTENT)
@@ -308,20 +311,3 @@ def delivered_items(request, cart_id):
         except Cart.DoesNotExist:
             return Response({"error":"Cart not found","message":"failed"}, status=status.HTTP_404_NOT_FOUND)
 
-
-@api_view(["GET"])
-@authentication_classes([JWTAuthentication])
-@permission_classes([IsAdminOnly])
-def make_pending(request, cart_id):
-    """Allows admin user to make a cart item status to 'pending' if the item wasnt successfully delievered"""
-    
-    if request.method == 'GET':
-        try:
-            cart_item = Cart.objects.get(id=cart_id, status="delivered")
-            cart_item.status = "pending"
-            cart_item.save()
-       
-            return Response({"message":"success"}, status=status.HTTP_204_NO_CONTENT)
-        
-        except Cart.DoesNotExist:
-            return Response({"error":"not found","message":"failed"}, status=status.HTTP_404_NOT_FOUND)
