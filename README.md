@@ -42,9 +42,10 @@ CART-ITEM-DELETE/ ENDPOINT:
   
   Requirements.txt are the name implies is all that contains all of my project dependencies
   
-  user activation token and id is gotten on the terminal
-  
   permissions codes were written by me
+
+CREATE NON-ADMIN-USER/ ENDPOINT:
+  create users in the x-auth/post/  endpoint
    
     
     
