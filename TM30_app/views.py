@@ -302,6 +302,7 @@ def delivered_items(request, cart_id):
         try:
             cart_item = Cart.objects.get(id=cart_id, status="pending")
             cart_item.status = "delivered"
+            cart_item.delete()
             cart_item.save()
        
             return Response({"message":"success"}, status=status.HTTP_204_NO_CONTENT)

@@ -147,15 +147,15 @@ SWAGGER_SETTINGS = {
     }
 }
 
-DJOSER = {
-    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
-    'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
-    'ACTIVATION_URL': 'http://127.0.0.1:8000/activate/{uid}/{token}',
-    'SEND_ACTIVATION_EMAIL': True,
-}
+# DJOSER = {
+#     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+#     'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+#     'ACTIVATION_URL': 'http://127.0.0.1:8000/activate/{uid}/{token}',
+#     'SEND_ACTIVATION_EMAIL': True,
+# }
 
-SITE_NAME = 'Oasix Jobs'
-DOMAIN = 'oasix.jobs'
+# SITE_NAME = 'Favour retails'
+# DOMAIN = 'Favour retails'
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -164,7 +164,7 @@ REST_FRAMEWORK = {
 }
 
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_FILE_STORAGE= 'whitenoise.storage.CompressedManifestStaticFileStorage'
