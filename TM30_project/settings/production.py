@@ -8,10 +8,10 @@ ALLOWED_HOSTS = ['tm30-api.herokuapp.com']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd84bei8buppmau',
-        'USER': 'hxtshipeqmkuxq',
-        'PASSWORD': 'f1bb1a5cf0f07a1e6b825dad7fcd040f34ba1930359b74bbda86e223128cb0ad',
-        'HOST': 'ec2-52-200-5-135.compute-1.amazonaws.com',
+        'NAME': 'd1l1lbhpvkacpn',
+        'USER': 'zxlnocxvotovgn',
+        'PASSWORD': 'c40b038eaa2781d975f4ccb63cce39876f9a339e46bee342bdb1227232d13e75',
+        'HOST': 'ec2-54-175-79-57.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
